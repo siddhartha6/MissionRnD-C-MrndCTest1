@@ -32,7 +32,78 @@ struct node{
 	int data;
 	struct node *next;
 };
-int merge_circularlists(struct node **head1, struct node **head2){
-	//Returns Length of merged Sorted circular SLL and also points *head1 to final SLL .
-	return -1;
+
+struct node *insert(struct node* head_ref, int new_data)
+{
+	/* 1. allocate node */
+	struct node* new_node = (struct node*) malloc(sizeof(struct node));
+
+	struct node *last = head_ref;  /* used in step 5*/
+
+	/* 2. put in the data  */
+	new_node->data = new_data;
+
+	/* 3. This new node is going to be the last node, so make next
+	of it as NULL*/
+	new_node->next = head_ref;
+
+	/* 4. If the Linked List is empty, then make the new node as head */
+	if (head_ref == NULL)
+	{
+		head_ref = new_node;
+		return head_ref;
+	}
+
+	/* 5. Else traverse till the last node */
+	while (last->next != head_ref)
+		last = last->next;
+
+	/* 6. Change the next of last node */
+	last->next = new_node;
+	return head_ref;
+}
+int merge_circularlists(struct node **head1, struct node **head2) {
+
+	if (*head1 == NULL && *head2 == NULL)
+		return -1;
+	struct node *result = NULL;
+	struct node *x = *head1;
+	struct node *y = *head2;
+	int len = 0;
+	while (x->next != *head1 && y->next != *head2) {
+		if (x->data < x->data)
+		{
+			result = insert(result, x->data);
+			x = x->next;
+		}
+		else if (x->data > x->data)
+		{
+			result = insert(result, y->data);
+			y = y->next;
+		}
+		else
+		{
+			result = insert(result, x->data);
+			result = insert(result, y->data);
+			x = x->next;
+			y = y->next;
+		}
+	}
+	while (x != *head1)
+	{
+		result = insert(result, x->data);
+		x = x->next;
+	}
+	while (y != *head2)
+	{
+		result = insert(result, y->data);
+		y = y->next;
+	}
+	*head1 = result;
+	struct node *temp = result;
+	while (temp->next != result){
+		temp = temp->next;
+		len++;
+	}
+	return len + 1;
 }

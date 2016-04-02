@@ -28,7 +28,86 @@ struct node{
 	struct node *next;
 };
 
+int mon[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+int month(int a, int yy)
+{
+	int res = 0,i=0;
+	for (i = 0; i<a - 1; i++)
+	{
+		if (i == 1)
+		{
+			if (yy % 4 == 0)
+				res += 29;
+			else
+				res += 28;
+		}
+		else
+			res += mon[i];
+	}
+	return res;
+}
+
+int difference(int d1, int d2, int m1, int m2, int y1, int y2)
+{
+	int count = 0, i;
+	for (i = y1; i<y2; i++)
+	{
+		if (i % 4 == 0)
+			count += 366;
+		else
+			count += 365;
+	}
+	count -= month(m1, y1);
+	count -= d1;
+	count += month(m2, y2);
+	count += d2;
+	if (count<0)
+		count = count * (-1);
+
+	return count;
+}
+
+
+
 
 int between_days(struct node *date1head, struct node *date2head){
-	return -1;
+	if (date1head == NULL || date2head == NULL)
+	    return -1;
+	int dd1 = 0, dd2 = 0, mm1 = 0, mm2 = 0, yy1 = 0, yy2 = 0;
+	int result = 0;
+		dd1 = (dd1 * 10) + date1head->data;
+		date1head = date1head->next;
+		dd1 = (dd1*10) + date1head->data;
+		date1head = date1head->next;
+		mm1 = (mm1 * 10) + date1head->data;
+		date1head = date1head->next;
+		mm1 = (mm1*10) + date1head->data;
+		date1head = date1head->next;
+		yy1 = (yy1) + date1head->data;
+		date1head = date1head->next;
+		yy1 = (yy1 * 10) + date1head->data;
+		date1head = date1head->next;
+		yy1 = (yy1 * 10) + date1head->data;
+		date1head = date1head->next;
+		yy1 = (yy1*10) + date1head->data;
+
+		dd2 = (dd2 * 10) + date2head->data;
+		date2head = date2head->next;
+		dd2 = (dd2 *10)+ date2head->data;
+		date2head = date2head->next;
+		mm2 = (mm2 * 10) + date2head->data;
+		date2head = date2head->next;
+		mm2 = (mm2*10) + date2head->data;
+		date2head = date2head->next;
+		yy2 = (yy2 ) + date2head->data;
+		date2head = date2head->next;
+		yy2 = (yy2 * 10) + date2head->data;
+		date2head = date2head->next;
+		yy2 = (yy2 * 10) + date2head->data;
+		date2head = date2head->next;
+		yy2 = (yy2*10)+date2head->data;
+
+		result = difference(dd1, dd2, mm1, mm2, yy1, yy2);
+
+		return result;
 }
